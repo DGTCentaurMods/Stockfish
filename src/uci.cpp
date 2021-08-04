@@ -20,6 +20,7 @@
 #include <cmath>
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <string>
 
 #include "evaluate.h"
@@ -126,6 +127,12 @@ namespace {
     Search::LimitsType limits;
     string token;
     bool ponderMode = false;
+
+    // Write FEN position to a file called fen.log after on every go command.
+    ofstream logfile;
+    logfile.open("fen.log");
+    logfile << pos.fen() << endl;
+    logfile.close();
 
     limits.startTime = now(); // As early as possible!
 
