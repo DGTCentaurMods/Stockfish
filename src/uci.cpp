@@ -76,7 +76,12 @@ namespace {
     {
         states->emplace_back();
         pos.do_move(m, states->back());
+
     }
+	ofstream logfile;
+        logfile.open("lastmove.log");
+        logfile << token << std::endl;
+        logfile.close();
   }
 
   // trace_eval() prints the evaluation for the current position, consistent with the UCI
@@ -381,9 +386,9 @@ Move UCI::to_move(const Position& pos, string& str) {
       str[4] = char(tolower(str[4]));
 
   for (const auto& m : MoveList<LEGAL>(pos))
-      if (str == UCI::move(m, pos.is_chess960()))
-          return m;
-
+	  if (str == UCI::move(m, pos.is_chess960()))
+ 	 	return m;
+  
   return MOVE_NONE;
 }
 
