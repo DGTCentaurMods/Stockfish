@@ -15,6 +15,18 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <sys/types.h>
+#include <sys/select.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <string.h>
+
 
 #include <cassert>
 #include <cmath>
@@ -22,6 +34,10 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 #include "evaluate.h"
 #include "movegen.h"
@@ -78,7 +94,7 @@ namespace {
         pos.do_move(m, states->back());
 
     }
-	ofstream logfile;
+				ofstream logfile;
         logfile.open("lastmove.log");
         logfile << token << std::endl;
         logfile.close();
@@ -246,6 +262,15 @@ void UCI::loop(int argc, char* argv[]) {
   string token, cmd;
   StateListPtr states(new std::deque<StateInfo>(1));
 
+	int fd;
+
+    // FIFO file path
+    char * myfifo = "/tmp/stockfish.pipe";
+
+    // Creating the named file(FIFO)
+    // mkfifo(<pathname>, <permission>)
+    mkfifo(myfifo, 0666);
+
   pos.set(StartFEN, false, &states->back(), Threads.main());
 
   for (int i = 1; i < argc; ++i)
@@ -260,7 +285,13 @@ void UCI::loop(int argc, char* argv[]) {
       token.clear(); // Avoid a stale if getline() returns empty or blank line
       is >> skipws >> token;
 
-      if (    token == "quit"
+        // Open FIFO for write only
+        fd = open(myfifo, O_RDWR);
+				//std::string msg = cmd.c_str() + std::string("\0");
+				write(fd, cmd.c_str(), strlen(cmd.c_str())+1);
+				close(fd);
+				
+		if (    token == "quit"
           ||  token == "stop")
           Threads.stop = true;
 
@@ -270,7 +301,6 @@ void UCI::loop(int argc, char* argv[]) {
       // normal search.
       else if (token == "ponderhit")
           Threads.main()->ponder = false; // Switch to normal search
-
       else if (token == "uci")
           sync_cout << "id name " << engine_info(true)
                     << "\n"       << Options
@@ -299,6 +329,7 @@ void UCI::loop(int argc, char* argv[]) {
       }
       else if (!token.empty() && token[0] != '#')
           sync_cout << "Unknown command: " << cmd << sync_endl;
+	
 
   } while (token != "quit" && argc == 1); // Command line args are one-shot
 }
