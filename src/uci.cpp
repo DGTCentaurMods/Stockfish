@@ -183,26 +183,22 @@ namespace {
 				string sql = "SELECT MAX(id) FROM game";
 				sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
 				gamedbid = sqlite3_step(stmt);
+				gamedbid = sqlite3_column_int(stmt, 0);
 				sqlite3_finalize(stmt);
-				/*sql = "DELETE FROM gameMove WHERE gameid=" + std::to_string(gamedbid);
-				sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
-				sqlite3_step(stmt);
-				sqlite3_finalize(stmt);
-				for (size_t i=0; i < movelist.size(); i++) { */
 					sql = "INSERT INTO gameMove(gameid,move,fen) VALUES(" + std::to_string(gamedbid) + ",'" + movelist[movelist.size()-1] + "','')";
 					sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
 					sqlite3_step(stmt);
 					sqlite3_finalize(stmt);
-				/* } */
 				sqlite3_close(db);
 			}
 		}
 	}
 
-	ofstream logfile;
+	/* ofstream logfile;
         logfile.open("lastmove.log");
         logfile << token << std::endl;
         logfile.close();
+	*/
 	startposnomoves = 0;
 	foundmoves = 0;
   }
