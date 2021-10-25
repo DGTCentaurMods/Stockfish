@@ -49,6 +49,12 @@
 #include "uci.h"
 #include "syzygy/tbprobe.h"
 
+#include <stdlib.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <iostream>
+#include <sqlite3.h>
+
 using namespace std;
 
 namespace Stockfish {
@@ -70,6 +76,8 @@ namespace {
 
     Move m;
     string token, fen;
+    int startposnomoves = 0;
+    int foundmoves = 0;
 
     is >> token;
 
@@ -77,7 +85,9 @@ namespace {
     {
         fen = StartFEN;
         is >> token; // Consume "moves" token if any
+	startposnomoves = 1;
     }
+
     else if (token == "fen")
         while (is >> token && token != "moves")
             fen += token + " ";
@@ -88,16 +98,109 @@ namespace {
     pos.set(fen, Options["UCI_Chess960"], &states->back(), Threads.main());
 
     // Parse move list (if any)
+    std::vector<std::string> movelist = {};
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE)
     {
+	movelist.push_back(token);
+	startposnomoves = 0;
         states->emplace_back();
         pos.do_move(m, states->back());
-
+	startposnomoves = 0;
+	foundmoves = 1;
     }
-				ofstream logfile;
+	if (startposnomoves >0) {
+        	DIR* dir;
+        	struct dirent* ent;
+        	char* endptr;
+        	char buf[512];
+        	int found = 0;
+        	const char* name = "/home/pi/centaur/centaur";
+        	dir = opendir("/proc");
+        	while((ent = readdir(dir)) != NULL) {
+                	long lpid = strtol(ent->d_name, &endptr, 10);
+                	if (*endptr != '\0') {
+                         	continue;
+                	}
+                	snprintf(buf, sizeof(buf), "/proc/%ld/cmdline", lpid);
+                	FILE* fp = fopen(buf, "r");
+                	if (fp) {
+                        	if (fgets(buf, sizeof(buf), fp) != NULL) {
+                                	char* first = strtok(buf, " ");
+                                	if (!strcmp(first, name)) {
+                                        	found = 1;
+                                	}
+                        	}
+                	}
+               		fclose(fp);
+        	}
+        	closedir(dir);
+		if (found == 1) {
+			/* At this point a startpos was detected with no extra moves = new game */
+			/* and the centaur process was running */
+			sqlite3 * db;
+			sqlite3_stmt * stmt;
+			/* Need to change this to be relative later */
+			if (sqlite3_open("/home/pi/DGTCentaur/DGTCentaurMods/db/centaur.db",&db) == SQLITE_OK) {
+				string sql = "INSERT INTO game(source) VALUES('Stockfish')";
+				sqlite3_prepare(db, sql.c_str(), -1, &stmt, NULL);
+				sqlite3_step(stmt);
+			}
+			sqlite3_finalize(stmt);
+			sqlite3_close(db);
+		}
+	}
+	if (foundmoves > 0) {
+                DIR* dir;
+                struct dirent* ent;
+                char* endptr;
+                char buf[512];
+                int found = 0;
+                const char* name = "/home/pi/centaur/centaur";
+                dir = opendir("/proc");
+                while((ent = readdir(dir)) != NULL) {
+                        long lpid = strtol(ent->d_name, &endptr, 10);
+                        if (*endptr != '\0') {
+                                continue;
+                        }
+                        snprintf(buf, sizeof(buf), "/proc/%ld/cmdline", lpid);
+                        FILE* fp = fopen(buf, "r");
+                        if (fp) {
+                                if (fgets(buf, sizeof(buf), fp) != NULL) {
+                                        char* first = strtok(buf, " ");
+                                        if (!strcmp(first, name)) {
+                                                found = 1;
+                                        }
+                                }
+                        }
+                        fclose(fp);
+                }
+                closedir(dir);
+		if (found == 1) {
+			sqlite3 * db;
+			sqlite3_stmt * stmt;
+			int gamedbid = -1;
+			if (sqlite3_open("/home/pi/DGTCentaur/DGTCentaurMods/db/centaur.db",&db) == SQLITE_OK) {
+				string sql = "SELECT MAX(id) FROM game";
+				sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+				gamedbid = sqlite3_step(stmt);
+				gamedbid = sqlite3_column_int(stmt, 0);
+				sqlite3_finalize(stmt);
+					sql = "INSERT INTO gameMove(gameid,move,fen) VALUES(" + std::to_string(gamedbid) + ",'" + movelist[movelist.size()-1] + "','')";
+					sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
+					sqlite3_step(stmt);
+					sqlite3_finalize(stmt);
+				sqlite3_close(db);
+			}
+		}
+	}
+
+	/* ofstream logfile;
         logfile.open("lastmove.log");
         logfile << token << std::endl;
         logfile.close();
+	*/
+	startposnomoves = 0;
+	foundmoves = 0;
   }
 
   // trace_eval() prints the evaluation for the current position, consistent with the UCI
