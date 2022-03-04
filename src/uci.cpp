@@ -140,7 +140,7 @@ namespace {
 			sqlite3 * db;
 			sqlite3_stmt * stmt;
 			/* Need to change this to be relative later */
-			if (sqlite3_open("/home/pi/DGTCentaur/DGTCentaurMods/db/centaur.db",&db) == SQLITE_OK) {
+			if (sqlite3_open("/opt/DGTCentaurMods/db/centaur.db",&db) == SQLITE_OK) {
 				string sql = "INSERT INTO game(source) VALUES('Stockfish')";
 				sqlite3_prepare(db, sql.c_str(), -1, &stmt, NULL);
 				sqlite3_step(stmt);
@@ -179,7 +179,7 @@ namespace {
 			sqlite3 * db;
 			sqlite3_stmt * stmt;
 			int gamedbid = -1;
-			if (sqlite3_open("/home/pi/DGTCentaur/DGTCentaurMods/db/centaur.db",&db) == SQLITE_OK) {
+			if (sqlite3_open("/opt/DGTCentaurMods/db/centaur.db",&db) == SQLITE_OK) {
 				string sql = "SELECT MAX(id) FROM game";
 				sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
 				gamedbid = sqlite3_step(stmt);
