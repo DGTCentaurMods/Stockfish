@@ -114,7 +114,7 @@ namespace {
         	char* endptr;
         	char buf[512];
         	int found = 0;
-        	const char* name = "/home/pi/centaur/centaur";
+        	const char* name = "./centaur";
         	dir = opendir("/proc");
         	while((ent = readdir(dir)) != NULL) {
                 	long lpid = strtol(ent->d_name, &endptr, 10);
@@ -155,7 +155,7 @@ namespace {
                 char* endptr;
                 char buf[512];
                 int found = 0;
-                const char* name = "/home/pi/centaur/centaur";
+                const char* name = "./centaur";
                 dir = opendir("/proc");
                 while((ent = readdir(dir)) != NULL) {
                         long lpid = strtol(ent->d_name, &endptr, 10);
