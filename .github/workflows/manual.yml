@@ -16,7 +16,6 @@ jobs:
     defaults:
       run:
         working-directory: src
-        shell: "'bash {0}"
 
     steps:
       - name: Checkout
