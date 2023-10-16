@@ -24,7 +24,7 @@ jobs:
       - name: Download required linux packages
         run: |
           sudo apt update
-          sudo apt install expect valgrind g++-multilib qemu-user
+          sudo apt install -y libsqlite3-dev expect valgrind g++-multilib qemu-user
 
       - name: Download the used network from the fishtest framework
         run: |
