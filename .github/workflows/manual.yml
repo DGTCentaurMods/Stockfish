@@ -1,36 +1,43 @@
 name: Compile stockfish workflow
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+on:
+  workflow_dispatch:
+  permissions: write-all
+
 jobs:
-  - name: Checkout
-    uses: actions/checkout@v4
-  - name: compiling test
-    runs-on: ${{ matrix.config.os }}
-    env:
-      COMPILER: ${{ matrix.config.compiler }}
-      COMP: ${{ matrix.config.comp }}
-      CXXFLAGS: "-Werror"
-    strategy:
-      matrix:
-      - {
-        name: "Ubuntu 20.04 NDK armv8",
-        os: ubuntu-20.04,
-        compiler: aarch64-linux-android21-clang++,
-        comp: ndk,
-        run_armv8_tests: true,
-        shell: 'bash {0}'
-        }
-    defaults:
-      run:
-        working-directory: src
-        shell: ${{ matrix.config.shell }}
+  Stockfish:
+    name: Compile stockfish
+    runs-on: ubuntu-20.04
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Download required linux packages
+      run: |
+        sudo apt update
+        sudo apt install expect valgrind g++-multilib qemu-user
+
+    - name: Download the used network from the fishtest framework
+      run: |
+        make net
+    
+
+    - name: compiling test
+      runs-on: ${{ matrix.config.os }}
+      env:
+        COMPILER: armv7a-linux-androideabi21-clang++
+        COMP: ndk
+        CXXFLAGS: "-Werror"
+      defaults:
+        run:
+          working-directory: src
+          shell: "'bash {0}"
     steps:
       - uses: actions/checkout@v2
-      - name: Test armv8 build
+      - name: armv7 build
         run: |
-        export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-        export LDFLAGS="-static -Wno-unused-command-line-argument"
-        make clean
-        make -j2 ARCH=armv8 build
+          export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+          export LDFLAGS="-static -Wno-unused-command-line-argument"
+          make clean
+          make -j2 ARCH=armv7 build
 
   
