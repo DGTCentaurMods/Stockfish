@@ -2,7 +2,8 @@ name: Compile stockfish workflow
 
 on:
   workflow_dispatch:
-  permissions: write-all
+
+permissions: write-all
 
 jobs:
   Stockfish:
