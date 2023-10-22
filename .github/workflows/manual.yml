@@ -10,6 +10,7 @@ jobs:
     name: Compile stockfish
     runs-on: ubuntu-20.04
     env:
+      COMPILER: armv7a-linux-androideabi21-clang++
       COMP: ndk
       CXXFLAGS: "-Werror"
     defaults:
@@ -53,7 +54,7 @@ jobs:
     
       - name: armv7 build
         run: |
-          export CXX="$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang++"
+          export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
           export LDFLAGS="-Wno-unused-command-line-argument -L /usr/local/lib/ -lsqlite3 -static -static-libgcc"
           make clean
           make -j2 ARCH=armv7 build
