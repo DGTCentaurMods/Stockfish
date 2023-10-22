@@ -29,29 +29,29 @@ jobs:
           sudo snap install zig --classic --edge
           sudo apt install -y expect valgrind g++-multilib qemu-user
 
-      #- name: Fetch sqlite3 src files
-      #  run: |  
-      #    wget https://www.sqlite.org/2023/sqlite-autoconf-3430200.tar.gz
-      #    tar xvzf sqlite-autoconf-3430200.tar.gz
+      - name: Fetch sqlite3 src files
+        run: |  
+          wget https://www.sqlite.org/2023/sqlite-autoconf-3430200.tar.gz
+          tar xvzf sqlite-autoconf-3430200.tar.gz
               
-      #- name: Configure sqlite3
-      #  run: |
-      #    cd sqlite-autoconf-3430200/
-      #    ./configure --host=arm-linux CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang
+      - name: Configure sqlite3
+        run: |
+          cd sqlite-autoconf-3430200/
+          ./configure --host=arm-linux CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang
           
-      #- name: Make sqlite3
-      #  run: |
-      #    cd sqlite-autoconf-3430200/
-      #    make
+      - name: Make sqlite3
+        run: |
+          cd sqlite-autoconf-3430200/
+          make
 
-      #- name: Install sqlite3
-      #  run: |
-      #    cd sqlite-autoconf-3430200/
-      #    sudo make install          
+      - name: Install sqlite3
+        run: |
+          cd sqlite-autoconf-3430200/
+          sudo make install          
 
-      #- name: Download the used network from the fishtest framework
-      #  run: |
-      #    make net
+      - name: Download the used network from the fishtest framework
+        run: |
+          make net
     
       - name: armv7 build stockfish
         run: |
@@ -62,11 +62,11 @@ jobs:
       #    make clean
       #    make -j2 ARCH=armv7 build
 
-      #- name: Push back to repo
-      #  run: |
-      #    git config --global user.name "Ed Nekebno"
-      #    git config --global user.email "ednekebno@gmail.com"
-      #    git add -f stockfish          
-      #    git commit -m "Compiled"
-      #    git push origin --force
+      - name: Push back to repo
+        run: |
+          git config --global user.name "Ed Nekebno"
+          git config --global user.email "ednekebno@gmail.com"
+          git add -f stockfish          
+          git commit -m "Compiled"
+          git push origin --force
   
