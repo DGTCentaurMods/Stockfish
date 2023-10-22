@@ -24,8 +24,7 @@ jobs:
       - name: Download required linux packages
         run: |
           sudo apt update
-          sudo apt install -y expect valgrind g++-multilib qemu-user
-          sudo apt-get install gcc-arm-linux-gnueabi          
+          sudo apt install -y expect valgrind g++-multilib qemu-user    
 
       - name: Fetch sqlite3 src files
         run: |  
@@ -35,7 +34,7 @@ jobs:
       - name: Configure sqlite3
         run: |
           cd sqlite-autoconf-3430200/
-          ./configure --host=arm-linux CC=/usr/bin/arm-linux-gnueabi-gcc
+          ./configure --host=arm-linux CC=$NDK_DIR/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang
           
       - name: Make sqlite3
         run: |
