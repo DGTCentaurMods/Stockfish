@@ -61,7 +61,7 @@ jobs:
 
       - name: Push back to repo
         run: |
-          git add stockfish
+          git add -f stockfish
           git config user.name "Action Build"
           git commit . -m "Compiled"
           git push origin main
