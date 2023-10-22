@@ -37,7 +37,7 @@ jobs:
       - name: Configure sqlite3
         run: |
           cd sqlite-autoconf-3430200/
-          ./configure --host=arm-linux CC=/usr/bin/arm-linux-gnueabi-gcc
+          ./configure --host=arm-linux
           
       - name: Make sqlite3
         run: |
@@ -55,8 +55,7 @@ jobs:
     
       - name: armv7 build
         run: |
-          export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-          export LDFLAGS="-static -Wno-unused-command-line-argument -L /usr/local/lib/ -lsqlite3"
+          export LDFLAGS="-Wno-unused-command-line-argument -L /usr/local/lib/ -lsqlite3 -static -static-libgcc"
           make clean
           make -j2 ARCH=armv7 build
 
