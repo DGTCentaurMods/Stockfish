@@ -32,3 +32,7 @@ jobs:
           tar xvzf sqlite-autoconf-3430200.tar.gz
           cd sqlite-autoconf-3430200/
     
+      - name: Compile
+        run: |
+          ./configure --host=arm-linux --prefix=devel/Libs CC=armv7a-linux-androideabi21-clang++
+          
