@@ -29,12 +29,11 @@ jobs:
 
       - name: Fetch src files
         run: |  
-          ls -l /usr/bin
           wget https://www.sqlite.org/2023/sqlite-autoconf-3430200.tar.gz
           tar xvzf sqlite-autoconf-3430200.tar.gz
               
       - name: Compile
         run: |
           cd sqlite-autoconf-3430200/
-          ./configure --host=arm-linux CC=gcc-arm-linux-gnueabi
+          ./configure --host=arm-linux CC=/usr/bin/arm-linux-gnueabi-gcc
           
