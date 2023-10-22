@@ -27,7 +27,6 @@ jobs:
           sudo apt-get remove sqlite3
           sudo apt-get remove libsqlite3-dev    
           sudo snap install zig --classic --edge
-          sudo apt install libatomic
           sudo apt install -y expect valgrind g++-multilib qemu-user
 
       - name: Fetch sqlite3 src files
