@@ -45,7 +45,7 @@ jobs:
       - name: Install sqlite3
         run: |
           cd sqlite-autoconf-3430200/
-          make install          
+          sudo make install          
 
       - name: Download the used network from the fishtest framework
         run: |
