@@ -351,7 +351,7 @@ ifeq ($(COMP),gcc)
 	endif
 
 	ifeq ($(arch),$(filter $(arch),armv7))
-		LDFLAGS += -latomic -lsqlite3
+		LDFLAGS += -lsqlite3
 	endif
 
 	ifneq ($(KERNEL),Darwin)
@@ -400,7 +400,7 @@ ifeq ($(COMP),clang)
 	ifeq ($(filter $(KERNEL),Darwin OpenBSD FreeBSD),)
 	ifeq ($(target_windows),)
 	ifneq ($(RTLIB),compiler-rt)
-		LDFLAGS += -latomic
+
 	endif
 	endif
 	endif
@@ -449,7 +449,7 @@ ifeq ($(COMP),ndk)
 			STRIP=llvm-strip
 		endif
 	endif
-	LDFLAGS += -static-libstdc++ -pie -lm -latomic
+	LDFLAGS += -static-libstdc++ -pie -lm
 endif
 
 ifeq ($(comp),icc)
