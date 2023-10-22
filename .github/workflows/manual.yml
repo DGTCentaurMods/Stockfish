@@ -53,8 +53,10 @@ jobs:
       #  run: |
       #    make net
     
-      #- name: armv7 build stockfish
-      #  run: |
+      - name: armv7 build stockfish
+        run: |
+          make clean
+          make -j build ARCH=armv7 COMP=gcc CXX="zig c++ -target arm-linux-musleabihf"
       #    export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
       #    export LDFLAGS="-Wno-unused-command-line-argument -L /usr/local/lib/ -lsqlite3"
       #    make clean
