@@ -54,7 +54,7 @@ jobs:
       - name: armv7 build
         run: |
           export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-          export LDFLAGS="-static -Wno-unused-command-line-argument /usr/local/lib/libsqlite3.a"
+          export LDFLAGS="-static -Wno-unused-command-line-argument llibsqlite3.so.0.8.6"
           make clean
           make -j2 ARCH=armv7 build
 
