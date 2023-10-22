@@ -10,7 +10,7 @@ jobs:
     name: Compile stockfish
     runs-on: ubuntu-20.04
     env:
-      COMPILER: armv7a-linux-androideabi21-clang++
+      COMPILER: $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang++
       COMP: ndk
       CXXFLAGS: "-Werror"
     defaults:
