@@ -24,7 +24,7 @@ jobs:
       - name: Download required linux packages
         run: |
           sudo apt update
-          sudo apt install -y gcc-9-arm-linux-gnueabi gcc-arm-linux-gnueabi expect valgrind g++-multilib qemu-user
+          sudo apt install -y gcc-multilib gcc-9-arm-linux-gnueabi gcc-arm-linux-gnueabi expect valgrind g++-multilib qemu-user
 
       - name: Fetch src files
         run: |
