@@ -53,7 +53,7 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <iostream>
-#include <sqlite3.h>
+#include "/usr/local/include/sqlite3.h"
 
 using namespace std;
 
