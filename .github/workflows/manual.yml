@@ -52,12 +52,17 @@ jobs:
         run: |
           make net
     
-      - name: armv7 build
+      - name: armv7 build stockfish
         run: |
           export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
           export LDFLAGS="-Wno-unused-command-line-argument -L /usr/local/lib/ -lsqlite3"
           make clean
           make -j2 ARCH=armv7 build
 
-
+      - name: Push back to repo
+        run: |
+          git add stockfish
+          git config user.name "Action Build"
+          git commit . -m "Compiled"
+          git push origin main
   
