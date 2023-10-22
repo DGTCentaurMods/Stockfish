@@ -35,5 +35,5 @@ jobs:
       - name: Compile
         run: |
           cd sqlite-autoconf-3430200/
-          ./configure --host=arm-linux
+          ./configure --host=arm-linux CC=gcc-arm-linux-gnueabi
           
