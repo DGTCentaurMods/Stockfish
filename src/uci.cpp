@@ -144,8 +144,8 @@ namespace {
 				string sql = "INSERT INTO game(source) VALUES('Stockfish')";
 				sqlite3_prepare(db, sql.c_str(), -1, &stmt, NULL);
 				sqlite3_step(stmt);
-			}
-			sqlite3_finalize(stmt);
+				sqlite3_finalize(stmt);
+			}			
 			sqlite3_close(db);
 		}
 	}
@@ -368,7 +368,7 @@ void UCI::loop(int argc, char* argv[]) {
 	int fd;
 
     // FIFO file path
-    char * myfifo = "/tmp/stockfish.pipe";
+    char const *myfifo = "/tmp/stockfish.pipe";
 
     // Creating the named file(FIFO)
     // mkfifo(<pathname>, <permission>)
