@@ -63,6 +63,6 @@ jobs:
         run: |
           git add -f stockfish
           git config user.name "Action Build"
-          git commit . -m "Compiled"
-          git push origin HEAD:master
+          git commit -m "Compiled"
+          git push origin --force
   
