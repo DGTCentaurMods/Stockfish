@@ -34,6 +34,7 @@ jobs:
       - name: Configure sqlite3
         run: |
           cd sqlite-autoconf-3430200/
+          ls -l $NDK_DIR/toolchains/llvm/prebuilt/linux-x86_64/bin/
           ./configure --host=arm-linux CC=$NDK_DIR/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang
           
       - name: Make sqlite3
