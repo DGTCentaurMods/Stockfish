@@ -39,4 +39,11 @@ jobs:
           
       - name: Make sqlite3
         run: |
+          cd sqlite-autoconf-3430200/
           ./make
+
+      - name: Install sqlite3
+        run: |
+          cd sqlite-autoconf-3430200/
+          ./make install
+          
