@@ -28,12 +28,13 @@ jobs:
           sudo apt-get install gcc-arm-linux-gnueabi          
 
       - name: Fetch src files
-        run: |          
+        run: |  
+          /usr/bin/which gcc-arm-linux-gnueabi
           wget https://www.sqlite.org/2023/sqlite-autoconf-3430200.tar.gz
           tar xvzf sqlite-autoconf-3430200.tar.gz
               
       - name: Compile
         run: |
           cd sqlite-autoconf-3430200/
-          sudo ./configure --host=arm-linux CC=gcc-arm-linux-gnueabi
+          ./configure --host=arm-linux CC=gcc-arm-linux-gnueabi
           
