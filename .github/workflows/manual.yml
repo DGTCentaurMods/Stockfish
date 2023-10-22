@@ -36,8 +36,7 @@ jobs:
       - name: Configure sqlite3
         run: |
           cd sqlite-autoconf-3430200/
-          export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
-          ./configure --host=arm-linux CC=armv7a-linux-androideabi21-clang
+          ./configure --host=arm-linux CC=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi21-clang
           
       - name: Make sqlite3
         run: |
