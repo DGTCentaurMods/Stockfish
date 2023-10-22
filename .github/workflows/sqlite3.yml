@@ -25,11 +25,11 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y expect valgrind g++-multilib qemu-user
-          sudo apt-get install gcc-arm-linux-gnueabi
-          which gcc-arm-linux-gnueabi
+          sudo apt-get install gcc-arm-linux-gnueabi          
 
       - name: Fetch src files
         run: |
+          which gcc-arm-linux-gnueabi
           wget https://www.sqlite.org/2023/sqlite-autoconf-3430200.tar.gz
           tar xvzf sqlite-autoconf-3430200.tar.gz
               
