@@ -27,6 +27,7 @@ jobs:
           sudo apt install -y expect valgrind g++-multilib qemu-user
           sudo apt-get install gcc-arm-linux-gnueabi
           sudo apt-get remove --auto-remove sqlite3
+          sudo apt-get remove --auto-remove libsqlite3-dev
 
       - name: Fetch sqlite3 src files
         run: |  
