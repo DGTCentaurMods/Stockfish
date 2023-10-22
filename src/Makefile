@@ -327,9 +327,9 @@ endif
 ### ==========================================================================
 
 ### 3.1 Selecting compiler (default = gcc)
-CXXFLAGS += -Wall -Wcast-qual -fno-exceptions -std=c++17 $(EXTRACXXFLAGS)
+CXXFLAGS += -Wall -Wcast-qual -fno-exceptions -std=c++17 $(EXTRACXXFLAGS) -I/usr/local/include
 DEPENDFLAGS += -std=c++17
-LDFLAGS += $(EXTRALDFLAGS)
+LDFLAGS += $(EXTRALDFLAGS) -L/usr/local/lib/
 
 ifeq ($(COMP),)
 	COMP=gcc
