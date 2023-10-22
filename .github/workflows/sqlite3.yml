@@ -34,5 +34,5 @@ jobs:
       - name: Compile
         run: |
           cd sqlite-autoconf-3430200/
-          ./configure --host=arm-linux CC=armv7a-linux-androideabi21-clang++
+          ./configure --host=arm-linux
           
