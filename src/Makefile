@@ -329,7 +329,7 @@ endif
 ### 3.1 Selecting compiler (default = gcc)
 CXXFLAGS += -Wall -Wcast-qual -fno-exceptions -std=c++17 $(EXTRACXXFLAGS) -I/usr/local/include/sqlite3.h
 DEPENDFLAGS += -std=c++17
-LDFLAGS += $(EXTRALDFLAGS) -L/usr/local/lib/
+LDFLAGS += $(EXTRALDFLAGS) -L/usr/local/lib/ -L/usr/lib -latomic
 
 ifeq ($(COMP),)
 	COMP=gcc
